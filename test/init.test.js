@@ -26,6 +26,17 @@ describe('test/init.test.js', () => {
     helper.restore();
   });
 
+  it('should generate', function* () {
+    yield command.run(tmp, [ '--controller', 'test1' ]);
+    yield command.run(tmp, [ '--middleware', 'test1' ]);
+    yield command.run(tmp, [ '--schedule', 'test1' ]);
+    yield command.run(tmp, [ '--extend', 'app' ]);
+    assert(fs.existsSync(path.join(tmp, 'app/controller/test1.js')));
+    assert(fs.existsSync(path.join(tmp, 'app/middleware/test1.js')));
+    assert(fs.existsSync(path.join(tmp, 'app/schedule/test1.js')));
+    assert(fs.existsSync(path.join(tmp, 'app/extend/app.js')));
+  });
+
   it('should work', function* () {
     const boilerplatePath = path.join(__dirname, 'fixtures/simple-test');
     yield command.run(tmp, [ 'simple-app', '--template=' + boilerplatePath, '--silent' ]);
